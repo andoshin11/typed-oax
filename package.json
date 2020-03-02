@@ -5,6 +5,23 @@
   "types": "lib/index.d.ts",
   "author": "andoshin11 <shinglish11@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "swagger",
+    "openapi",
+    "codegen",
+    "typescript",
+    "express"
+  ], 
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andoshin11/typed-oax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andoshin11/typed-oax/issues"
+  },
+  "bin": {
+    "codegen": "./bin/gen.js"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
