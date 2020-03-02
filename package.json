@@ -1,7 +1,8 @@
 {
   "name": "typed-oax",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "andoshin11 <shinglish11@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@squelette/core": "^0.2.0",
+    "commander": "^4.1.1",
     "js-yaml": "^3.13.1",
     "prettier": "^1.19.1"
   }

@@ -3,9 +3,9 @@
 
 
 "@squelette/core@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@squelette/core/-/core-0.2.0.tgz#5df891bdeb343f36a709163b50e47899ffcff699"
-  integrity sha512-3/n2RMy5Zc8PBcTlSunUVBKeHkLNOw7idegUCLEK31qiEWrp2C9g5K/eMS8yxm0x3yMulckIl+itZu5NHWNQlw==
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/@squelette/core/-/core-0.2.10.tgz#59b35a8f61f984320f18057a9e1e3a49bc3f95cf"
+  integrity sha512-o//OUGJWDshg0SkRZ6Q3zDB8xwZuA+RxTS52DwiL8QYiyJSDojakD//amHVhcdj+mB3m+WcRbuWhC5WfZy2OuA==
 
 "@types/body-parser@*":
   version "1.19.0"
@@ -78,6 +78,11 @@ argparse@^1.0.7:
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
+
+commander@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
+  integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
 
 esprima@^4.0.0:
   version "4.0.1"
