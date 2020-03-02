@@ -1,13 +1,26 @@
 import * as ts from 'typescript'
-import { IOperation } from '@squelette/core'
+import { IOperation, SchemaToAST } from '@squelette/core'
 
-// receive multiple operations for the sam path
+// receive multiple operations for the same path
 export const createOperationsAST = (operations: IOperation[]) => {
   const path = operations[0].path
 
+  // /shops/{shopId}/pets/{petId} -> /shops/:shopId/pets/:petId
   const pathLiteral = path.replace(/\{([^{}]*)\}/gi, ':$1')
+
+  // /shops/{shopId}/pets/{petId} -> ['shopId', 'petId']
   const pathParameters = (path.match(/\{([^{}]*)\}/gi) || []).map(r => r.slice(1, r.length-1))
 
+  /**
+   * generates path maps
+   * 
+   * ex: /shops/{shopId}/pets/{petId}
+   * 
+   * {
+   *   shopId: string;
+   *   petId: string
+   * }
+   */
   const pathType: ts.TypeElement[] = pathParameters.map(p => {
     return ts.createPropertySignature(
       undefined,
@@ -19,17 +32,16 @@ export const createOperationsAST = (operations: IOperation[]) => {
   })
 
   const reqBodyTypeParameter = ts.createUnionTypeNode(
-    operations.map((_, i) => {
-      return ts.createTypeLiteralNode([
-        ts.createPropertySignature(
-          undefined,
-          ts.createIdentifier("msg"),
-          undefined,
-          ts.createLiteralTypeNode(ts.createNumericLiteral(String(i))),
-          undefined
-        )
-      ])
-    })
+    operations
+      .filter(o => !!o.requestBody)
+      .map(o => SchemaToAST(o.requestBody!)
+    )
+  )
+
+  const resBodyTypeParameter = ts.createUnionTypeNode(
+    operations
+      .filter(o => !!o.response)
+      .map(o => SchemaToAST(o.response!))
   )
 
   const typeParameters: ts.TypeParameterDeclaration[] = [
@@ -49,7 +61,7 @@ export const createOperationsAST = (operations: IOperation[]) => {
     ts.createTypeParameterDeclaration(
       ts.createIdentifier("ResBody"),
       undefined,
-      ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+      resBodyTypeParameter
     ),
     ts.createTypeParameterDeclaration(
       ts.createIdentifier("ReqBody"),

@@ -1,6 +1,6 @@
 import * as ts from 'typescript'
 
-export const createRootAST = (operations: ts.TypeElement[]) => {
+export const createRootAST = (operations: ts.TypeElement[], models: ts.Statement[]) => {
   return [
     ts.createImportDeclaration(
       undefined,
@@ -19,7 +19,7 @@ export const createRootAST = (operations: ts.TypeElement[]) => {
       undefined,
       [ts.createModifier(ts.SyntaxKind.DeclareKeyword)],
       ts.createStringLiteral("express-serve-static-core"),
-      ts.createModuleBlock([ts.createInterfaceDeclaration(
+      ts.createModuleBlock([...models, ts.createInterfaceDeclaration(
         undefined,
         [ts.createModifier(ts.SyntaxKind.ExportKeyword)],
         ts.createIdentifier("IRouterMatcher"),
