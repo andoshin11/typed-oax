@@ -11,7 +11,7 @@
     "codegen",
     "typescript",
     "express"
-  ], 
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andoshin11/typed-oax.git"
@@ -20,7 +20,7 @@
     "url": "https://github.com/andoshin11/typed-oax/issues"
   },
   "bin": {
-    "codegen": "./bin/gen.js"
+    "oax": "./bin/gen.js"
   },
   "scripts": {
     "build": "tsc",
