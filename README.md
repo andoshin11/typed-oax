@@ -27,6 +27,7 @@ Check out the running example [here](./example).
 
 ## CLI Options
 
+```
 Usage: oax generate [options] [command]
 
 Generate declaration file from Open API targeting for Express usecase
@@ -41,3 +42,4 @@ Commands:
   Options:
     -d, --dist <dist>        output directory
     -w, --watch              watch your spec file change
+```
