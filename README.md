@@ -38,16 +38,6 @@ Options:
 Commands:
   generate [options] <file>
 
-Usage: gen [options] [command]
-
-Generate declaration file from Open API targeting for Express usecase
-
-Options:
-  -V, --version              output the version number
-  -h, --help                 output usage information
-
-Commands:
-  generate [options] <file>
-
   Options:
     -d, --dist <dist>        output directory
+    -w, --watch              watch your spec file change
