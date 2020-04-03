@@ -5,7 +5,7 @@
     "module": "commonjs",
     "strict": true,
     "types": ["node"],
-    "lib": ["ES2017"],
+    "lib": ["es2015"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
