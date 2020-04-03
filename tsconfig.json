@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "esnext",
+    "target": "es5",
     "module": "commonjs",
     "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
     "types": ["node"],
-    "lib": ["es2015"],
+    "lib": ["ES2017"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
