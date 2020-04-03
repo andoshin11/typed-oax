@@ -1,0 +1,33 @@
+name: main
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.13.0]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Prepare repository
+        run: git checkout "${GITHUB_REF:11}"
+      - name: Setting up Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Restore dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: |
+          yarn install
+      - name: Run test
+        run: |
+          yarn run test:type
+        env:
+          CI: true
