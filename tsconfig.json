@@ -6,6 +6,7 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["node"],
+    "lib": ["DOM", "ES2015.Promise"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
