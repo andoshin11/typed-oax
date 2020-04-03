@@ -5,7 +5,7 @@ import { createRootAST } from './root'
 import { createModelType } from './models'
 import * as utils from '../utils'
 
-export const createAST = (data: OpenAPIObject) => {
+export const createAST = (data: number) => {
   // Generate Type alias for schemas
   const components = data.components
   const schemas = components && components.schemas
