@@ -4,9 +4,8 @@
     "target": "esnext",
     "module": "commonjs",
     "strict": true,
-    "skipLibCheck": true,
     "types": ["node"],
-    "lib": ["DOM", "ES2015.Promise"],
+    "lib": ["ES2017"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
