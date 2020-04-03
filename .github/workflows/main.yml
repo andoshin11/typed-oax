@@ -26,6 +26,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-      - uses: andoshin11/tsc-reporter@5c8e1aa9ca4798a182f86e5f0004a0a73033e44c
+      - uses: andoshin11/tsc-reporter@8d1a97ddb206163d736067fc2facc709505559b1
         env:
           CI: true
