@@ -10,6 +10,18 @@ async function main() {
 
   const route = express.Router()
 
+  // route.get('/pets/:petId', (req, res) => {
+  //   const { petId } = req.params
+
+  //   res.json({ pet: {} })
+  // })
+
+  route.put('/pets/:petId', (req, res) => {
+    const { body, params } = req
+
+    
+  })
+
   /** handler type will be inferenced here */
   route.get('/pets', (_, res) => {
     res.json({ pets: [1, 2, 3].map(petFactory) })

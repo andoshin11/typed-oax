@@ -134,7 +134,49 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"            
+                $ref: "#/components/schemas/Error"  
+    put:
+      operationId: UpdatePet
+      tags:
+        - pets    
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          description: The id of the pet to retrieve
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                category:
+                  type: integer
+                  format: int32
+                  enum:
+                    - 1
+                    - 2
+                    - 3
+                sex:
+                  type: string
+                  enum:
+                    - male
+                    - female
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - pet
+                properties:
+                  pet:
+                    $ref: "#/components/schemas/Pet"      
 components:
   schemas:
     Pet:

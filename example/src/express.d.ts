@@ -35,10 +35,18 @@ declare module "express-serve-static-core" {
       P extends Params = {
         petId: string;
       },
-      ResBody = {
-        pet: Pet;
-      },
-      ReqBody = null
+      ResBody =
+        | {
+            pet: Pet;
+          }
+        | {
+            pet: Pet;
+          },
+      ReqBody = null | {
+        name?: string;
+        category?: 1 | 2 | 3;
+        sex?: "male" | "female";
+      }
     >(
       path: "/pets/:petId",
       ...handlers: Array<RequestHandler<P, ResBody, ReqBody>>
