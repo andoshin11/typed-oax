@@ -25,7 +25,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "start": "yarn run build && node lib/index.js"
+    "start": "yarn run build && node lib/index.js",
+    "test:type": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",
