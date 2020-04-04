@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
-      - uses: actions/typescript-error-reporter@v1.0.0
+      - name: TypeScript Error Reporter
+        uses: andoshin11/typescript-error-reporter-action@v1.0.0
         env:
           CI: true
