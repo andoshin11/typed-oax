@@ -16,16 +16,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Restore dependencies
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Install dependencies
-        run: |
-          yarn install
-      - uses: andoshin11/tsc-reporter@d28f935dee5548e23a619ced17040ab2020cc4c1
+      # - name: Restore dependencies
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-node-${{ hashFiles('yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
+      # - name: Install dependencies
+      #   run: |
+      #     yarn install
+      - uses: andoshin11/tsc-reporter@cc9603bfd726d69abe16c2fbcbe3d15694ca286f
         env:
           CI: true
