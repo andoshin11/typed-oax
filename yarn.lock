@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@squelette/core@^0.2.0":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@squelette/core/-/core-0.2.10.tgz#59b35a8f61f984320f18057a9e1e3a49bc3f95cf"
-  integrity sha512-o//OUGJWDshg0SkRZ6Q3zDB8xwZuA+RxTS52DwiL8QYiyJSDojakD//amHVhcdj+mB3m+WcRbuWhC5WfZy2OuA==
+"@squelette/core@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@squelette/core/-/core-1.1.0.tgz#e61c87f548c3511f0d7e412b62b17605031c9189"
+  integrity sha512-Smv8/mA/s3X82J6QbICDMrN9W6fdWjAuejiiTx+UUuPdqtwSnqrPDS/LFUBEJzlJXLiYFWNcxeGSGg7osv/hFg==
 
 "@types/body-parser@*":
   version "1.19.0"

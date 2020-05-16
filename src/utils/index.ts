@@ -1,8 +1,4 @@
-import { IOperation, ITag } from '@squelette/core'
-
-export const tagToOperationList = (data: ITag) => {
-  return Object.values(data).reduce((acc, ac) => [...acc, ...ac], [] as IOperation[])
-}
+import { IOperation } from '@squelette/core'
 
 export const groupByPath = (operations: IOperation[]) => {
   const hash = operations.reduce((acc, ac) => {
