@@ -36,11 +36,23 @@ export const createOperationsAST = (operations: IOperation[]) => {
     return acc
   }, {} as Record<HTTPMethod, IOperation>)
 
-  const reqBodyTypeParameter = ts.createUnionTypeNode(
-    operations
-      .filter(o => !!o.requestBody)
-      .map(o => SchemaToAST(o.requestBody!)
-    )
+  /**
+   * generates request body type
+   */
+  const createReqBodyAst = (ops: IOperation | undefined) => !ops || !ops.requestBody ? ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.requestBody)
+  const reqBodyTypeParameter = ts.createTypeReferenceNode(
+    ts.createIdentifier("_ReqBody"),
+    [
+      ts.createTypeReferenceNode(
+        ts.createIdentifier("Method"),
+        undefined
+      ),
+      createReqBodyAst(opsByMethod['get']),
+      createReqBodyAst(opsByMethod['post']),
+      createReqBodyAst(opsByMethod['put']),
+      createReqBodyAst(opsByMethod['delete']),
+      createReqBodyAst(opsByMethod['patch'])
+    ]
   )
 
   /**
