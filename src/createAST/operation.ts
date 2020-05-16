@@ -37,6 +37,28 @@ export const createOperationsAST = (operations: IOperation[]) => {
   }, {} as Record<HTTPMethod, IOperation>)
 
   /**
+   * generates query type
+   */
+  const createQueryAst = (ops: IOperation | undefined) => !ops || !ops.queryParameter ? ts.createTypeReferenceNode(
+    ts.createIdentifier("ParsedQs"),
+    undefined
+  ) : SchemaToAST(ops.queryParameter)
+  const queryTeypParameter = ts.createTypeReferenceNode(
+    ts.createIdentifier("_ReqQuery"),
+    [
+      ts.createTypeReferenceNode(
+        ts.createIdentifier("Method"),
+        undefined
+      ),
+      createQueryAst(opsByMethod['get']),
+      createQueryAst(opsByMethod['post']),
+      createQueryAst(opsByMethod['put']),
+      createQueryAst(opsByMethod['delete']),
+      createQueryAst(opsByMethod['patch'])
+    ]
+  )
+
+  /**
    * generates request body type
    */
   const createReqBodyAst = (ops: IOperation | undefined) => !ops || !ops.requestBody ? ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.requestBody)
@@ -97,6 +119,11 @@ export const createOperationsAST = (operations: IOperation[]) => {
       ts.createIdentifier("ReqBody"),
       undefined,
       reqBodyTypeParameter
+    ),
+    ts.createTypeParameterDeclaration(
+      ts.createIdentifier("ReqQuery"),
+      undefined,
+      queryTeypParameter
     )
   ]
 
@@ -135,6 +162,10 @@ export const createOperationDeclaration = (path: string, typeParameters: ts.Type
             ),
             ts.createTypeReferenceNode(
               ts.createIdentifier("ReqBody"),
+              undefined
+            ),
+            ts.createTypeReferenceNode(
+              ts.createIdentifier("ReqQuery"),
               undefined
             )
           ]
