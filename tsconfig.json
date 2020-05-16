@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "esnext",
+    "target": "es5",
     "module": "commonjs",
     "strict": true,
     "types": ["node"],
+    "lib": ["ESNext"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
