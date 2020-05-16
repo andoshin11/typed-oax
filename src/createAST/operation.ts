@@ -1,5 +1,5 @@
 import * as ts from 'typescript'
-import { IOperation, SchemaToAST } from '@squelette/core'
+import { IOperation, SchemaToAST, HTTPMethod } from '@squelette/core'
 
 // receive multiple operations for the same path
 export const createOperationsAST = (operations: IOperation[]) => {
@@ -31,6 +31,11 @@ export const createOperationsAST = (operations: IOperation[]) => {
     )
   })
 
+  const opsByMethod = operations.reduce((acc, ac) => {
+    acc[ac.method] = ac
+    return acc
+  }, {} as Record<HTTPMethod, IOperation>)
+
   const reqBodyTypeParameter = ts.createUnionTypeNode(
     operations
       .filter(o => !!o.requestBody)
@@ -38,10 +43,23 @@ export const createOperationsAST = (operations: IOperation[]) => {
     )
   )
 
-  const resBodyTypeParameter = ts.createUnionTypeNode(
-    operations
-      .filter(o => !!o.response)
-      .map(o => SchemaToAST(o.response!))
+  /**
+   * generates response body type
+   */
+  const createResBodyAst = (ops: IOperation | undefined) => !ops || !ops.response ? ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.response)
+  const resBodyTypeParameter = ts.createTypeReferenceNode(
+    ts.createIdentifier("_ResBody"),
+    [
+      ts.createTypeReferenceNode(
+        ts.createIdentifier("Method"),
+        undefined
+      ),
+      createResBodyAst(opsByMethod['get']),
+      createResBodyAst(opsByMethod['post']),
+      createResBodyAst(opsByMethod['put']),
+      createResBodyAst(opsByMethod['delete']),
+      createResBodyAst(opsByMethod['patch'])
+    ]
   )
 
   const typeParameters: ts.TypeParameterDeclaration[] = [
