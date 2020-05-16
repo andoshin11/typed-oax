@@ -4,10 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
     "types": ["node"],
-    "lib": ["ES2017"],
     "outDir": "lib"
   },
   "include": ["src/**/*.ts"]
