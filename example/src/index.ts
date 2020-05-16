@@ -17,13 +17,16 @@ async function main() {
   // })
 
   route.put('/pets/:petId', (req, res) => {
-    const { body, params } = req
+    const { body, params , query} = req
 
     
   })
 
   /** handler type will be inferenced here */
-  route.get('/pets', (_, res) => {
+  route.get('/pets', (req, res) => {
+    const query = req.query // { limit?: number; }
+    const body = req.body // null
+    // res.json({ wrong: 'wrong response' }) <- throws type error
     res.json({ pets: [1, 2, 3].map(petFactory) })
   })
 

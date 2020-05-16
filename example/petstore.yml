@@ -11,8 +11,6 @@ paths:
     get:
       summary: List all pets
       operationId: listPets
-      tags:
-        - pets
       parameters:
         - name: limit
           in: query
@@ -49,8 +47,6 @@ paths:
     post:
       summary: Create a pet
       operationId: createPets
-      tags:
-        - pets
       requestBody:
         content:
           application/json:
@@ -108,8 +104,6 @@ paths:
     get:
       summary: Info for a specific pet
       operationId: showPetById
-      tags:
-        - pets
       parameters:
         - name: petId
           in: path
@@ -137,8 +131,6 @@ paths:
                 $ref: "#/components/schemas/Error"  
     put:
       operationId: UpdatePet
-      tags:
-        - pets    
       parameters:
         - name: petId
           in: path
