@@ -1,0 +1,10 @@
+version: "3"
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - 3020:8080
+    volumes:
+      - ./petstore.yml:/usr/share/nginx/html/petstore.yaml
+    environment:
+      API_URL: ./petstore.yaml
