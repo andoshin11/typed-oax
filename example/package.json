@@ -7,5 +7,8 @@
     "typegen": "node ../lib/bin/cli.js generate ./petstore.yml -d src",
     "watch": "node ../lib/bin/cli.js generate ./petstore.yml -d src -w",
     "test": "../node_modules/.bin/tsc --noEmit"
+  },
+  "devDependencies": {
+    "typed-oax": "^0.0.4"
   }
 }
