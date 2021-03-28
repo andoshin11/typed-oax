@@ -23,6 +23,12 @@ $ oax generate ./petstore.yml -d src
 
 This command will give you `express.d.ts` file inside `src/`.
 
+You can also use remote file.
+
+```sh
+$ oax generate https://my-project.netlify.app/swagger.yml -d src -n myschema.ts
+```
+
 Check out the running example [here](./example).
 
 ## CLI Options

@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "typegen": "node ../lib/bin/cli.js generate ./petstore.yml -d src",
+    "typegen:http": "node ../lib/bin/cli.js generate https://loop-cast-schema.netlify.app/swagger.yml -d src",
     "watch": "node ../lib/bin/cli.js generate ./petstore.yml -d src -w",
     "test": "../node_modules/.bin/tsc --noEmit"
   },

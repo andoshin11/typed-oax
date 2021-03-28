@@ -4,14 +4,9 @@ import * as path from 'path'
 import * as YAML from 'js-yaml'
 import { watch as chokidar } from 'chokidar'
 import { Generator } from '../generator'
+import { Fetcher } from '../fetcher'
 
 const pkg = require('../../package.json')
-
-function generate(filePath: string, dist: string, name: string) {
-  const target = fs.readFileSync(filePath, 'utf-8')
-  const yaml = YAML.safeLoad(target)
-  new Generator(yaml, { dist, name }).generate()
-}
 
 commander
   .version(pkg.version)
@@ -29,29 +24,45 @@ commander
         throw new Error('Output directory is required. Please specify with --dist option.')
       }
 
-      if (/\.ya?ml$/.test(file)) {
+      const needToFetch = file.startsWith('http')
+      if (needToFetch && !!watch) {
+        throw new Error('Cannot use watch mode for remote file')
+      }
+
+      // Get file
+      let _file: string
+      if (needToFetch) {
+        const fetcher = new Fetcher(file)
+        _file = await fetcher.fetch()
+      } else {
         const filePath = path.resolve(process.cwd(), file)
         if (!fs.existsSync(filePath)) {
           throw new Error('File does not exist.')
         }
+        _file = fs.readFileSync(filePath, 'utf-8')
+      }
+
+      if (/\.ya?ml$/.test(file)) {
+        const yaml = YAML.safeLoad(_file)
 
         if (!watch) {
-          generate(filePath, dist, name)
+          new Generator(yaml, { dist, name }).generate()
         } else {
           // watch file change
-          const watcher = chokidar(filePath)
+          const watchFile = path.resolve(process.cwd(), file)
+          const watcher = chokidar(watchFile)
           watcher
             .on('ready', () => {
-              generate(filePath, dist, name)
+              new Generator(yaml, { dist, name }).generate()
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
             .on('error', (error: Error) => {throw error})
             .on('change', () => {
-              generate(filePath, dist, name)
+              new Generator(yaml, { dist, name }).generate()
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
             .on('unlink', () => {
-              generate(filePath, dist, name)
+              new Generator(yaml, { dist, name }).generate()
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
         }
