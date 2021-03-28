@@ -7,6 +7,7 @@ import { createAST } from './createAST'
 
 export interface GeneratorOptions {
   dist: string
+  name: string
 }
 
 export class Generator {
@@ -32,6 +33,6 @@ export class Generator {
     const pretty = prettier.format(printList(ast), { parser: 'typescript' })
 
     // Output
-    fs.writeFileSync(path.resolve(this.dist, 'express.d.ts'), pretty)
+    fs.writeFileSync(path.resolve(this.dist, this.options.name), pretty)
   }
 }

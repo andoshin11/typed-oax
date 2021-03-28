@@ -7,20 +7,22 @@ import { Generator } from '../generator'
 
 const pkg = require('../../package.json')
 
-function generate(filePath: string, dist: string) {
+function generate(filePath: string, dist: string, name: string) {
   const target = fs.readFileSync(filePath, 'utf-8')
   const yaml = YAML.safeLoad(target)
-  new Generator(yaml, { dist }).generate()
+  new Generator(yaml, { dist, name }).generate()
 }
 
 commander
   .version(pkg.version)
   .description("Generate declaration file from Open API targeting for Express usecase")
   .command("generate <file>")
-  .option("-d, --dist <dist>", "Output directory")
+  .option("-d, --dist <dist>", "output directory")
+  .option("-n, --name <name>", "output filename. Default: express.d.ts")
   .option("-w, --watch", "watch your spec file change")
-  .action(async (file: string, options: { dist?: string; watch?: boolean }) => {
+  .action(async (file: string, options: { dist?: string; watch?: boolean; name?: string }) => {
     const { dist, watch } = options
+    const name = typeof options.name === 'string' ? options.name : 'express.d.ts'
 
     try {
       if (!dist) {
@@ -34,22 +36,22 @@ commander
         }
 
         if (!watch) {
-          generate(filePath, dist)
+          generate(filePath, dist, name)
         } else {
           // watch file change
           const watcher = chokidar(filePath)
           watcher
             .on('ready', () => {
-              generate(filePath, dist)
+              generate(filePath, dist, name)
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
             .on('error', (error: Error) => {throw error})
             .on('change', () => {
-              generate(filePath, dist)
+              generate(filePath, dist, name)
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
             .on('unlink', () => {
-              generate(filePath, dist)
+              generate(filePath, dist, name)
               console.log(`Code generated: ${ path.resolve(process.cwd(), dist) }/express.d.ts [${ new Date() }]`)
             })
         }

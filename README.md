@@ -41,5 +41,6 @@ Commands:
 
   Options:
     -d, --dist <dist>        output directory
+    -n, --name <name>        output filename. Default: express.d.ts
     -w, --watch              watch your spec file change
 ```
