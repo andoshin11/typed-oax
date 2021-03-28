@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 import { ParsedQs } from "qs";
 declare module "express-serve-static-core" {
   type Pet = {
@@ -7,90 +6,13 @@ declare module "express-serve-static-core" {
     category?: 1 | 2 | 3;
     tag?: string;
     sex?: "male" | "female";
+    registeredAt?: Date;
   };
   type Pets = Pet[];
   type Error = {
     code: number;
     message: string;
   };
-  type _ResBody<
-    M extends
-      | "all"
-      | "get"
-      | "post"
-      | "put"
-      | "delete"
-      | "patch"
-      | "options"
-      | "head" = any,
-    GetRes = any,
-    PostRes = any,
-    PutRes = any,
-    DeleteRes = any,
-    PatchRes = any
-  > = "get" extends M
-    ? GetRes
-    : "post" extends M
-    ? PostRes
-    : "put" extends M
-    ? PutRes
-    : "delete" extends M
-    ? DeleteRes
-    : "patch" extends M
-    ? PatchRes
-    : any;
-  type _ReqBody<
-    M extends
-      | "all"
-      | "get"
-      | "post"
-      | "put"
-      | "delete"
-      | "patch"
-      | "options"
-      | "head" = any,
-    GetRes = any,
-    PostRes = any,
-    PutRes = any,
-    DeleteRes = any,
-    PatchRes = any
-  > = "get" extends M
-    ? GetRes
-    : "post" extends M
-    ? PostRes
-    : "put" extends M
-    ? PutRes
-    : "delete" extends M
-    ? DeleteRes
-    : "patch" extends M
-    ? PatchRes
-    : any;
-  type _ReqQuery<
-    M extends
-      | "all"
-      | "get"
-      | "post"
-      | "put"
-      | "delete"
-      | "patch"
-      | "options"
-      | "head" = any,
-    GetRes = any,
-    PostRes = any,
-    PutRes = any,
-    DeleteRes = any,
-    PatchRes = any
-  > = "get" extends M
-    ? GetRes
-    : "post" extends M
-    ? PostRes
-    : "put" extends M
-    ? PutRes
-    : "delete" extends M
-    ? DeleteRes
-    : "patch" extends M
-    ? PatchRes
-    : any;
   export interface IRouterMatcher<
     T,
     Method extends
@@ -105,40 +27,46 @@ declare module "express-serve-static-core" {
   > {
     <
       P extends Params = ParamsDictionary,
-      ResBody = _ResBody<
-        Method,
-        {
+      ResBody = {
+        all: any;
+        get: {
           pets: Pet[];
-        },
-        {
+        };
+        post: {
           pet: Pet;
-        },
-        any,
-        any,
-        any
-      >,
-      ReqBody = _ReqBody<
-        Method,
-        null,
-        {
+        };
+        put: any;
+        delete: any;
+        options: any;
+        head: any;
+        patch: any;
+      }[Method],
+      ReqBody = {
+        all: any;
+        get: null;
+        post: {
           name: string;
           category?: 1 | 2 | 3;
           sex: "male" | "female";
-        },
-        any,
-        any,
-        any
-      >,
-      ReqQuery = _ReqQuery<
-        Method,
-        {
+        };
+        put: any;
+        delete: any;
+        options: any;
+        head: any;
+        patch: any;
+      }[Method],
+      ReqQuery = {
+        all: ParsedQs;
+        get: {
           limit?: number;
-        },
-        null,
-        ParsedQs,
-        ParsedQs,
-        ParsedQs
-      >
+        };
+        post: null;
+        put: ParsedQs;
+        delete: ParsedQs;
+        options: ParsedQs;
+        head: ParsedQs;
+        patch: ParsedQs;
+      }[Method]
     >(
       path: "/pets",
       ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery>>
@@ -147,31 +75,44 @@ declare module "express-serve-static-core" {
       P extends Params = {
         petId: string;
       },
-      ResBody = _ResBody<
-        Method,
-        {
+      ResBody = {
+        all: any;
+        get: {
           pet: Pet;
-        },
-        any,
-        {
+        };
+        post: any;
+        put: {
           pet: Pet;
-        },
-        any,
-        any
-      >,
-      ReqBody = _ReqBody<
-        Method,
-        null,
-        any,
-        {
+        };
+        delete: any;
+        options: any;
+        head: any;
+        patch: any;
+      }[Method],
+      ReqBody = {
+        all: any;
+        get: null;
+        post: any;
+        put: {
           name?: string;
           category?: 1 | 2 | 3;
           sex?: "male" | "female";
-        },
-        any,
-        any
-      >,
-      ReqQuery = _ReqQuery<Method, null, ParsedQs, null, ParsedQs, ParsedQs>
+        };
+        delete: any;
+        options: any;
+        head: any;
+        patch: any;
+      }[Method],
+      ReqQuery = {
+        all: ParsedQs;
+        get: null;
+        post: ParsedQs;
+        put: null;
+        delete: ParsedQs;
+        options: ParsedQs;
+        head: ParsedQs;
+        patch: ParsedQs;
+      }[Method]
     >(
       path: "/pets/:petId",
       ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery>>

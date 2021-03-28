@@ -1,7 +1,7 @@
 import * as express from 'express'
 
-const petFactory = (id: number) => ({
-  id,
+const petFactory = (id?: number) => ({
+  id: id || 1,
   name: 'dummy'
 })
 
@@ -9,6 +9,26 @@ async function main() {
   const app = express()
 
   const route = express.Router()
+
+  route.post('/pets', (req, res) => {
+    const { query: { limit, offset } } = req
+
+    res.json({ pets: [] })
+  })
+
+  route.get('/pets/:petId', (req, res) => {
+    const { query, params } = req
+
+    res.json({ invalidProp: 'invalid val' })
+  })
+
+  route.post('/pets', (req, res) => {
+    const { body } = req
+
+    
+    console.log(body.name)
+    // ...
+  })
 
   // route.get('/pets/:petId', (req, res) => {
   //   const { petId } = req.params

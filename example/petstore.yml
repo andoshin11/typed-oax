@@ -19,6 +19,12 @@ paths:
           schema:
             type: integer
             format: int32
+        # - name: offset
+        #   in: query
+        #   required: false
+        #   schema:
+        #     type: integer
+        #     format: int32
       responses:
         '200':
           description: A paged array of pets
@@ -195,6 +201,9 @@ components:
           enum:
             - male
             - female
+        registeredAt:
+          type: string
+          format: date-time
     Pets:
       type: array
       items:
