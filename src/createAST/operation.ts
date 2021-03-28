@@ -34,66 +34,91 @@ export const createOperationsAST = (operations: IOperation[]) => {
   const opsByMethod = operations.reduce((acc, ac) => {
     acc[ac.method] = ac
     return acc
-  }, {} as Record<HTTPMethod, IOperation>)
+  }, {} as Record<HTTPMethod | 'all', IOperation>)
 
   /**
    * generates query type
    */
-  const createQueryAst = (ops: IOperation | undefined) => !ops || !ops.queryParameter ? ts.createTypeReferenceNode(
-    ts.createIdentifier("ParsedQs"),
+  const createQueryAst = (ops: IOperation | undefined) => !ops || !ops.queryParameter ? ts.factory.createTypeReferenceNode(
+    ts.factory.createIdentifier("ParsedQs"),
     undefined
   ) : SchemaToAST(ops.queryParameter)
-  const queryTeypParameter = ts.createTypeReferenceNode(
-    ts.createIdentifier("_ReqQuery"),
-    [
-      ts.createTypeReferenceNode(
-        ts.createIdentifier("Method"),
-        undefined
-      ),
-      createQueryAst(opsByMethod['get']),
-      createQueryAst(opsByMethod['post']),
-      createQueryAst(opsByMethod['put']),
-      createQueryAst(opsByMethod['delete']),
-      createQueryAst(opsByMethod['patch'])
-    ]
+
+  const createQueryPropertySignature = (method: HTTPMethod | 'all') => ts.factory.createPropertySignature(
+    undefined,
+    ts.factory.createStringLiteral(method),
+    undefined,
+    createQueryAst(opsByMethod[method])
+  )
+  const queryTeypParameter = ts.factory.createIndexedAccessTypeNode(
+    ts.factory.createTypeLiteralNode([
+      createQueryPropertySignature('all'),
+      createQueryPropertySignature('get'),
+      createQueryPropertySignature('post'),
+      createQueryPropertySignature('put'),
+      createQueryPropertySignature('delete'),
+      createQueryPropertySignature('options'),
+      createQueryPropertySignature('head'),
+      createQueryPropertySignature('patch')
+    ]),
+    ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier('Method'),
+      undefined
+    )
   )
 
   /**
    * generates request body type
    */
-  const createReqBodyAst = (ops: IOperation | undefined) => !ops || !ops.requestBody ? ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.requestBody)
-  const reqBodyTypeParameter = ts.createTypeReferenceNode(
-    ts.createIdentifier("_ReqBody"),
-    [
-      ts.createTypeReferenceNode(
-        ts.createIdentifier("Method"),
-        undefined
-      ),
-      createReqBodyAst(opsByMethod['get']),
-      createReqBodyAst(opsByMethod['post']),
-      createReqBodyAst(opsByMethod['put']),
-      createReqBodyAst(opsByMethod['delete']),
-      createReqBodyAst(opsByMethod['patch'])
-    ]
+  const createReqBodyAst = (ops: IOperation | undefined) => !ops || !ops.requestBody ? ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.requestBody)
+  const createReqPropertySignature = (method: HTTPMethod | 'all') => ts.factory.createPropertySignature(
+    undefined,
+    ts.factory.createStringLiteral(method),
+    undefined,
+    createReqBodyAst(opsByMethod[method])
+  )
+  const reqBodyTypeParameter = ts.factory.createIndexedAccessTypeNode(
+    ts.factory.createTypeLiteralNode([
+      createReqPropertySignature('all'),
+      createReqPropertySignature('get'),
+      createReqPropertySignature('post'),
+      createReqPropertySignature('put'),
+      createReqPropertySignature('delete'),
+      createReqPropertySignature('options'),
+      createReqPropertySignature('head'),
+      createReqPropertySignature('patch')
+    ]),
+    ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier('Method'),
+      undefined
+    )
   )
 
   /**
    * generates response body type
    */
-  const createResBodyAst = (ops: IOperation | undefined) => !ops || !ops.response ? ts.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.response)
-  const resBodyTypeParameter = ts.createTypeReferenceNode(
-    ts.createIdentifier("_ResBody"),
-    [
-      ts.createTypeReferenceNode(
-        ts.createIdentifier("Method"),
-        undefined
-      ),
-      createResBodyAst(opsByMethod['get']),
-      createResBodyAst(opsByMethod['post']),
-      createResBodyAst(opsByMethod['put']),
-      createResBodyAst(opsByMethod['delete']),
-      createResBodyAst(opsByMethod['patch'])
-    ]
+  const createResBodyAst = (ops: IOperation | undefined) => !ops || !ops.response ? ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword) : SchemaToAST(ops.response)
+  const createResPropertySignature = (method: HTTPMethod | 'all') => ts.factory.createPropertySignature(
+    undefined,
+    ts.factory.createStringLiteral(method),
+    undefined,
+    createResBodyAst(opsByMethod[method])
+  )
+  const resBodyTypeParameter = ts.factory.createIndexedAccessTypeNode(
+    ts.factory.createTypeLiteralNode([
+      createResPropertySignature('all'),
+      createResPropertySignature('get'),
+      createResPropertySignature('post'),
+      createResPropertySignature('put'),
+      createResPropertySignature('delete'),
+      createResPropertySignature('options'),
+      createResPropertySignature('head'),
+      createResPropertySignature('patch')
+    ]),
+    ts.factory.createTypeReferenceNode(
+      ts.factory.createIdentifier('Method'),
+      undefined
+    )
   )
 
   const typeParameters: ts.TypeParameterDeclaration[] = [
