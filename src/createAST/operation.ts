@@ -1,5 +1,5 @@
 import * as ts from 'typescript'
-import { IOperation, SchemaToAST, HTTPMethod } from '@squelette/core'
+import { IOperation, SchemaToAST, HTTPMethod, TSSchema } from '@squelette/core'
 
 // receive multiple operations for the same path
 export const createOperationsAST = (operations: IOperation[]) => {
@@ -39,10 +39,26 @@ export const createOperationsAST = (operations: IOperation[]) => {
   /**
    * generates query type
    */
-  const createQueryAst = (ops: IOperation | undefined) => !ops || !ops.queryParameter ? ts.factory.createTypeReferenceNode(
-    ts.factory.createIdentifier("ParsedQs"),
-    undefined
-  ) : SchemaToAST(ops.queryParameter)
+  const createQueryAst = (ops: IOperation | undefined) => {
+    if (!ops || !ops.queryParameter) {
+      return ts.factory.createTypeReferenceNode(
+        ts.factory.createIdentifier("ParsedQs"),
+        undefined
+      )
+    } else {
+      // Override query parameter type as string || string[]
+      const overridden: TSSchema = {
+        ...ops.queryParameter,
+        properties: Object.entries(ops.queryParameter.properties).reduce((acc, ac) => {
+          const [key, val] = ac
+          acc[key] = { ...val, type: 'string' }
+          return acc
+        }, {} as TSSchema['properties'])
+      }
+
+      return SchemaToAST(overridden)
+    }
+  }
 
   const createQueryPropertySignature = (method: HTTPMethod | 'all') => ts.factory.createPropertySignature(
     undefined,

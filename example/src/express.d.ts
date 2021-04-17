@@ -58,7 +58,7 @@ declare module "express-serve-static-core" {
       ReqQuery = {
         all: ParsedQs;
         get: {
-          limit?: number;
+          limit?: string;
         };
         post: null;
         put: ParsedQs;
